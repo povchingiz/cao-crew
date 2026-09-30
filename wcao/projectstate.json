@@ -1,8 +1,8 @@
 {
   "project": "wcao",
-  "active_plan": "wcao/plans/master-plan.md",
+  "active_plan": "wcao/plans/2026-09-22-production-resilience-and-dx.md",
   "now_file": "wcao/plans/now.md",
   "tasks_file": "wcao/tasks.json",
-  "focus": "P0: Repo root resolution in cao_auto & multi-project tmux session scoping. P1: Hermes 50% context compactor.",
+  "focus": "Milestone 6: Production Resilience, Watchdog Hardening & Zero-Friction DX",
   "current_branch": "master"
 }

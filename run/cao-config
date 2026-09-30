@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# cao-config — open the wcao browser-based config editor.
+#
+# Serves a self-contained HTML form at http://localhost:9877 that lets you
+# edit cao.config.local.toml and .env in one place, then applies the changes
+# with a single "Save & Apply" button (runs ./3_apply/apply.sh automatically).
+#
+# Works fully standalone — no cao-server required.
+# Auto-shuts down after 60 s of inactivity or when you click Done.
+#
+#   cao-config          open the config editor (default)
+#   cao-config --port N serve on a different port (sets env CAO_CONFIG_PORT)
+#   cao-config -h       show this help
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO="$(cd "$HERE/.." && pwd)"
+
+# Find the best available Python (prefer CAO's bundled venv → system python3)
+CAO_PY="$HOME/.local/share/uv/tools/cli-agent-orchestrator/bin/python"
+if [ -x "$CAO_PY" ]; then
+  PY="$CAO_PY"
+else
+  PY=python3
+fi
+
+# Verify tomllib is available (Python 3.11+)
+if ! "$PY" -c 'import tomllib' 2>/dev/null; then
+  echo "Error: Python with tomllib required (Python 3.11+). Found: $($PY --version)" >&2
+  exit 1
+fi
+
+printf '\033[1;36m==>\033[0m Opening wcao config editor at \033[1mhttp://localhost:9877\033[0m\n'
+printf '\033[0;90m    Editing: %s/2_configure/cao.config.local.toml\033[0m\n' "$REPO"
+printf '\033[0;90m             %s/.env\033[0m\n' "$REPO"
+printf '\033[0;90m    Press Ctrl-C or click Done to stop the editor server.\033[0m\n'
+
+# Open the browser after a short delay so the server has time to start.
+if command -v open >/dev/null 2>&1; then
+  # macOS
+  (sleep 0.8 && open http://localhost:9877) &
+elif command -v xdg-open >/dev/null 2>&1; then
+  # Linux
+  (sleep 0.8 && xdg-open http://localhost:9877) &
+fi
+
+exec "$PY" "$HERE/cao_config_server.py" "$REPO"

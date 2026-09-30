@@ -2,7 +2,8 @@
 # cao-run — start the CAO orchestrator: pre-flight, daemon, then the supervisor.
 #
 #   cao-run                     health-check, then launch the supervisor
-#   cao-run --provider <engine> select supervisor engine (claude_code, antigravity_cli, etc)
+#   cao-run --sv <engine>       select supervisor engine (agy, codex, claude, opencode, hermes)
+#   cao-run --provider <engine> alias for --sv (also accepts full provider IDs e.g. antigravity_cli)
 #   cao-run --model <model>     select specific model (e.g. gemini-3.8-flash-high)
 #   cao-run --project <name>    scope supervisor tmux session name to project
 #   cao-run --skip-check        skip the cao-doctor pre-flight gate
@@ -11,7 +12,7 @@
 # Any other arguments are passed through to `cao launch` unchanged.
 #
 # Supervisor engine and model can also be set via environment:
-#   CAO_SUPERVISOR_PROVIDER=<engine>  force a specific engine (highest priority)
+#   CAO_SUPERVISOR_PROVIDER=<engine>  force a specific engine or alias (highest priority)
 #   CAO_SUPERVISOR_MODEL=<model>      force a specific model for the engine
 #   CAO_PROJECT=<name>                project name for scoped tmux session
 #   ~/.cao/supervisor_provider        fallback hint written by cao-doctor
@@ -20,9 +21,6 @@
 # fallback engine (CAO_FALLBACK_PROVIDER > antigravity_cli > opencode_cli > codex).
 set -euo pipefail
 
-SERVER_PORT=9889
-LOG_DIR="$HOME/.cao/logs"
-LOG_FILE="$LOG_DIR/server.log"
 # Resolve through a symlink so we find sibling scripts (cao-doctor) in the repo,
 # not wherever the symlink lives (e.g. ~/.local/bin).
 SELF="${BASH_SOURCE[0]}"
@@ -35,18 +33,45 @@ HERE="$(cd "$(dirname "$SELF")" && pwd)"
 # shellcheck source=run/_cao_common.sh
 . "$HERE/_cao_common.sh"
 
+# Normalize short engine aliases to full CAO provider names.
+normalize_sv_engine() {
+  case "$1" in
+    agy|antigravity|gemini) echo "antigravity_cli" ;;
+    claude|cc)             echo "claude_code" ;;
+    codex|openai)          echo "codex" ;;
+    opencode|oc|coder)     echo "opencode_cli" ;;
+    hermes|nous)           echo "hermes_cli" ;;
+    copilot|gh)            echo "copilot_cli" ;;
+    *)                     echo "$1" ;;
+  esac
+}
+
+# Read server_port from config (local overrides base), fall back to 9889.
+_CFG="$HERE/../setup/2_configure/cao.config.local.toml"
+[ -f "$_CFG" ] || _CFG="$HERE/../setup/2_configure/cao.config.toml"
+SERVER_PORT="$(python3 -c "
+import sys, tomllib
+cfg = tomllib.load(open(sys.argv[1],'rb'))
+print(cfg.get('orchestrator',{}).get('server_port', 9889))
+" "$_CFG" 2>/dev/null)" || SERVER_PORT=9889
+LOG_DIR="$HOME/.cao/logs"
+LOG_FILE="$LOG_DIR/server.log"
+
 # Parse our own flags; collect the rest to pass through to `cao launch`.
 # --skip-check works in ANY position, not just first.
 SKIP_CHECK=0
 PASSTHROUGH=()
 while [ $# -gt 0 ]; do
   case "$1" in
-    --skip-check) SKIP_CHECK=1 ;;
-    --provider)   CAO_SUPERVISOR_PROVIDER="$2"; shift ;;
-    --model)      CAO_SUPERVISOR_MODEL="$2"; shift ;;
-    --project)    CAO_PROJECT="$2"; shift ;;
-    -h|--help)    awk 'NR>1{ if(/^#/){sub(/^# ?/,"");print} else if(NF){exit} }' "$0"; exit 0 ;;
-    *)            PASSTHROUGH+=("$1") ;;
+    --skip-check)     SKIP_CHECK=1 ;;
+    --sv|--provider)  [ $# -ge 2 ] || { echo "❌ Error: $1 requires an argument (e.g. --sv agy)"; exit 1; }; CAO_SUPERVISOR_PROVIDER="$(normalize_sv_engine "$2")"; shift ;;
+    --sv=*|--provider=*) CAO_SUPERVISOR_PROVIDER="$(normalize_sv_engine "${1#*=}")" ;;
+    --model)          CAO_SUPERVISOR_MODEL="$2"; shift ;;
+    --model=*)        CAO_SUPERVISOR_MODEL="${1#*=}" ;;
+    --project)        CAO_PROJECT="$2"; shift ;;
+    --project=*)      CAO_PROJECT="${1#*=}" ;;
+    -h|--help)        awk 'NR>1{ if(/^#/){sub(/^# ?/,"");print} else if(NF){exit} }' "$0"; exit 0 ;;
+    *)                PASSTHROUGH+=("$1") ;;
   esac
   shift
 done
@@ -112,11 +137,11 @@ fi
 DEFAULT_SUPERVISOR_PROVIDER="claude_code"
 HINT_FILE="$HOME/.cao/supervisor_provider"
 if [ -n "${CAO_SUPERVISOR_PROVIDER:-}" ]; then
-  SUP_PROVIDER="$CAO_SUPERVISOR_PROVIDER"          # explicit override wins
+  SUP_PROVIDER="$(normalize_sv_engine "$CAO_SUPERVISOR_PROVIDER")"          # explicit override wins
 elif [ -f "$HINT_FILE" ] && [ -s "$HINT_FILE" ]; then
-  SUP_PROVIDER="$(tr -d '[:space:]' < "$HINT_FILE")"  # doctor's fallback hint
+  SUP_PROVIDER="$(normalize_sv_engine "$(tr -d '[:space:]' < "$HINT_FILE")")"  # doctor's fallback hint
   echo "ℹ Claude unavailable per cao-doctor — supervisor falling back to '$SUP_PROVIDER'."
-  echo "  (Override any time with CAO_SUPERVISOR_PROVIDER=... ; delete $HINT_FILE to reset.)"
+  echo "  (Override any time with --sv <engine> or CAO_SUPERVISOR_PROVIDER=... ; delete $HINT_FILE to reset.)"
 else
   SUP_PROVIDER="$DEFAULT_SUPERVISOR_PROVIDER"
 fi

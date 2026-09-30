@@ -262,6 +262,9 @@ PY
 fi
 
 # --- 8. Interactive steps ----------------------------------------------------
+ok "wcao installed at: $REPO"
+ok "config UI: run/cao-config (opens browser)"
+ok ".env location: $REPO/.env"
 cat <<'EOF'
 
 ============================================================
@@ -275,7 +278,9 @@ cat <<'EOF'
                            to ~/.config/cao/cao.env if you set it).
 
 Then run:  cao-run
+       or: cao-config   (browser config editor — edit endpoint/models/port)
 
 All four workers (claude / opencode / codex / antigravity) callable from the
 supervisor. Re-run this script after any `cao update` (re-applies pyte patch).
 EOF
+
