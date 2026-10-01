@@ -3,6 +3,6 @@ revision = 3
 requires-python = ">=3.11"
 
 [[package]]
-name = "wcao"
+name = "cao-crew"
 version = "0.2.0"
 source = { virtual = "." }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-cao_config_server.py — Standalone wcao browser-based config editor.
+cao_config_server.py — Standalone cao-crew browser-based config editor.
 Usage: python3 cao_config_server.py <repo_root>
 Serves on http://localhost:9877
 No pip dependencies — stdlib only.
@@ -28,7 +28,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>wcao Config Editor</title>
+<title>cao-crew Config Editor</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -86,7 +86,7 @@ HTML = r"""<!DOCTYPE html>
 </head>
 <body>
 <div class="container">
-  <h1>⚙ wcao Config Editor</h1>
+  <h1>⚙ cao-crew Config Editor</h1>
   <div class="subtitle">Editing config files directly in your browser — changes take effect immediately via apply.sh</div>
   <div style="margin-bottom: 20px;">
     <span class="file-badge">__ENV_PATH__</span>

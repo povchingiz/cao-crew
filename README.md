@@ -1,15 +1,15 @@
-# CAO — Autonomous CLI Agent Orchestrator
+# CAO-Crew — Autonomous CLI Agent Orchestrator
 
 > **Orchestrate your frontier AI coding CLI engines into a cohesive, self-learning engineering squad.**
 
-[![Interactive Deck](https://img.shields.io/badge/Presentation%20Deck-16%20Slides-6366f1?style=flat-square&logo=googleslides&logoColor=white)](https://povchingiz.github.io/wcao/)
-[![Sequence Diagram](https://img.shields.io/badge/Architecture-Sequence%20Diagram-06b6d4?style=flat-square&logo=diagramsdotnet&logoColor=white)](https://povchingiz.github.io/wcao/#16)
+[![Interactive Deck](https://img.shields.io/badge/Presentation%20Deck-16%20Slides-6366f1?style=flat-square&logo=googleslides&logoColor=white)](https://povchingiz.github.io/cao-crew/)
+[![Sequence Diagram](https://img.shields.io/badge/Architecture-Sequence%20Diagram-06b6d4?style=flat-square&logo=diagramsdotnet&logoColor=white)](https://povchingiz.github.io/cao-crew/#16)
 
 ---
 
 ## TL;DR
 
-> **`wcao` turns your fragmented terminal AI tools (`claude`, `codex`, `agy`, `opencode`, `copilot`, `hermes`) into an autonomous, quota-aware engineering squad managed inside background `tmux` sessions.**
+> **`cao-crew` turns your fragmented terminal AI tools (`claude`, `codex`, `agy`, `opencode`, `copilot`, `hermes`) into an autonomous, quota-aware engineering squad managed inside background `tmux` sessions.**
 
 * 💰 **Economic Asymmetry:** The expensive model (Claude) designs architecture and reviews PRs; cheap/local models (OpenCode, DeepSeek, Hermes) write bulk boilerplate; Gemini/Antigravity ingests massive 1M+ token repo contexts; Copilot (*in progress / WIP*) drafts GitHub PRs, Actions, and cloud deploy configs.
 * 🔑 **Zero Subscription Tax:** Authenticate once natively in your terminal (`claude /login`, `codex login`, `agy`, `gh auth login`). CAO connects directly to your existing authenticated CLI sessions — no proxying, no extra SaaS markups, no token leakage.
@@ -17,7 +17,7 @@
 * 🧠 **Persistent Memory Standard (`wcao/`):** SQLite FTS5 episodic storage + `wcao/plans/now.md` checkpoints ensure full context preservation across reboots, crashes, and model switches.
 
 ```bash
-git clone git@github.com:povchingiz/wcao.git ~/wcao && cd ~/wcao
+git clone git@github.com:povchingiz/cao-crew.git ~/cao-crew && cd ~/cao-crew
 ./setup/1_install/bootstrap.sh && run/cao-run
 ```
 

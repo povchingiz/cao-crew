@@ -168,7 +168,7 @@ persist_path() {
   for f in "$HOME/.zshrc" "$HOME/.bashrc" "$HOME/.profile" "$HOME/.zprofile"; do
     [ -f "$f" ] && grep -q '\.local/bin' "$f" 2>/dev/null && return 0
   done
-  printf '\n# Added by wcao bootstrap — cao-run/cao-tokens/etc live here\n%s\n' "$line" >> "$rc"
+  printf '\n# Added by cao-crew bootstrap — cao-run/cao-tokens/etc live here\n%s\n' "$line" >> "$rc"
   warn "Added ~/.local/bin to PATH in $rc — open a new shell or 'source $rc'."
 }
 persist_path
@@ -262,7 +262,7 @@ PY
 fi
 
 # --- 8. Interactive steps ----------------------------------------------------
-ok "wcao installed at: $REPO"
+ok "cao-crew installed at: $REPO"
 ok "config UI: run/cao-config (opens browser)"
 ok ".env location: $REPO/.env"
 cat <<'EOF'

@@ -1,14 +1,14 @@
-# AGENTS.md — Universal AI Agent Guidance for `wcao`
+# AGENTS.md — Universal AI Agent Guidance for `cao-crew`
 
 > **For AI Assistants (Claude Code, Cursor, OpenAI Codex, Google Antigravity, Windsurf, OpenCode, GitHub Copilot, Aider, Cline):**  
-> When a developer asks you *"How do I run this?"*, *"Help me set up wcao"*, or *"What is this project?"*, follow this guide. Your role is to be an empathetic, practical technical guide who can inspect the system, explain clearly, and run safe diagnostic and bootstrap commands.
+> When a developer asks you *"How do I run this?"*, *"Help me set up cao-crew"*, or *"What is this project?"*, follow this guide. Your role is to be an empathetic, practical technical guide who can inspect the system, explain clearly, and run safe diagnostic and bootstrap commands.
 
 ---
 
-## 1. What is `wcao` (Explain this simply to the human)
+## 1. What is `cao-crew` (Explain this simply to the human)
 
 When explaining to the user, use this clear summary:
-> *"Think of `wcao` as a technical lead managing a team of specialized AI workers on your machine. Instead of using one expensive AI model for everything, `wcao` lets Claude design architecture, cheap or local models (OpenCode, DeepSeek, Hermes) write the bulk boilerplate, and Gemini/Agy read massive codebases — all coordinated inside background `tmux` sessions. You pay zero extra SaaS fees because it connects to the official terminal CLI tools you already use."*
+> *"Think of `cao-crew` as a technical lead managing a team of specialized AI workers on your machine. Instead of using one expensive AI model for everything, `cao-crew` lets Claude design architecture, cheap or local models (OpenCode, DeepSeek, Hermes) write the bulk boilerplate, and Gemini/Agy read massive codebases — all coordinated inside background `tmux` sessions. You pay zero extra SaaS fees because it connects to the official terminal CLI tools you already use."*
 
 ---
 

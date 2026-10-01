@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# cao-config — open the wcao browser-based config editor.
+# cao-config — open the cao-crew browser-based config editor.
 #
 # Serves a self-contained HTML form at http://localhost:9877 that lets you
 # edit cao.config.local.toml and .env in one place, then applies the changes
@@ -30,7 +30,7 @@ if ! "$PY" -c 'import tomllib' 2>/dev/null; then
   exit 1
 fi
 
-printf '\033[1;36m==>\033[0m Opening wcao config editor at \033[1mhttp://localhost:9877\033[0m\n'
+printf '\033[1;36m==>\033[0m Opening cao-crew config editor at \033[1mhttp://localhost:9877\033[0m\n'
 printf '\033[0;90m    Editing: %s/2_configure/cao.config.local.toml\033[0m\n' "$REPO"
 printf '\033[0;90m             %s/.env\033[0m\n' "$REPO"
 printf '\033[0;90m    Press Ctrl-C or click Done to stop the editor server.\033[0m\n'
