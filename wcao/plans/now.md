@@ -20,7 +20,12 @@ All shipped — see [`archive/`](archive/) for historical specs.
 - `hermes_worker` engine integration + conformance test suite
 - `cao-plan` goal decomposer → cycle-free DAG in `wcao/tasks.json`
 - Anti-test-tampering gate (`cao_tamper.py`)
-- 56/56 tests passing
+- `cao-run` fix: early symlink resolution prevents `$HERE: unbound variable` crash ([`wcao/plans/2026-09-22-cao-run-fix.md`](2026-09-22-cao-run-fix.md))
+- Shorthand supervisor flag: `--sv <engine>` (`agy`, `codex`, `claude`, `opencode`, `hermes`) in `run/cao-run`
+- `code_supervisor.md` prompt streamlined to strict orchestration-only mandate
+- Nitec models configured for OpenCode (`Kimi-K3`, `GLM-5.3`, `DeepSeek-V4-Pro`)
+- 58/58 test suite passing (`tests/test_cao_run_flags.py`)
+- Orca ADE architecture comparison & backlog mapped
 
 ---
 
