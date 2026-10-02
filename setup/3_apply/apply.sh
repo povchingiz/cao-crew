@@ -83,9 +83,22 @@ if command -v cao >/dev/null 2>&1; then
 fi
 
 # Offer server restart so opencode.json / settings changes are picked up.
+ASSUME_YES="n"
+for a in "$@"; do
+  case "$a" in
+    -y|--yes) ASSUME_YES="y" ;;
+  esac
+done
+
 if nc -z 127.0.0.1 9889 >/dev/null 2>&1; then
   printf '\n'
-  read -r -p "cao-server is running. Restart it to apply changes? [y/N] " ans
+  if [ "$ASSUME_YES" = "y" ]; then
+    ans="y"
+  elif [ ! -t 0 ]; then
+    ans="N"
+  else
+    read -r -p "cao-server is running. Restart it to apply changes? [y/N] " ans
+  fi
   case "${ans:-N}" in
     y|Y)
       log "Restarting cao-server..."

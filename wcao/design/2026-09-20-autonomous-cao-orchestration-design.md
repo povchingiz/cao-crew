@@ -45,7 +45,7 @@ To maximize value from cloud subscriptions while maintaining 100% uptime:
 * **Structured Audits, QA, Large-Context Maps:** `antigravity_worker` / `analyst_worker` (`antigravity_cli` / Gemini 3.1 Pro / Claude)
 
 ### Tier 2 (Universal Catch-All Fallback — Everywhere):
-* **High-Throughput Bulk Coding:** `coder_worker` (`opencode_cli` with `deepseek-ai/DeepSeek-V4-Pro` / Kimi-K3 / GLM on Nitec endpoint).
+* **High-Throughput Bulk Coding:** `coder_worker` (`opencode_cli` with `deepseek-ai/DeepSeek-V4-Pro` / Kimi-K3 / GLM on bulk endpoint).
 * Metered, vast token capacity, completely unconstrained by cloud subscription rate-limit windows.
 
 ### Autonomous Fallback Trigger:

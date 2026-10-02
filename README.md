@@ -18,7 +18,7 @@
 
 ```bash
 git clone git@github.com:povchingiz/cao-crew.git ~/cao-crew && cd ~/cao-crew
-./setup/1_install/bootstrap.sh && run/cao-run
+./install.sh
 ```
 
 ---
@@ -165,8 +165,15 @@ engine · `CAO_FALLBACK_PROVIDER` sets the auto-retry engine · `LOCAL_API_KEY`
 git clone <this-repo-url> ~/wcao
 cd ~/wcao
 cp .env.example .env               # set LOCAL_API_KEY (bulk-worker endpoint key)
+./install.sh                       # recommended one-command setup
+# or, step by step:
 ./setup/1_install/bootstrap.sh
 ```
+
+`./install.sh` is the recommended one-command setup: it runs the bootstrap
+installer, walks you through the interactive onboarding and native CLI logins
+(`claude`, `codex`, `agy`, `gh auth login`), and finishes with the pre-flight
+`cao-doctor` check — everything from the section above in a single step.
 
 Flags: `--inherit-mcp` (give your existing Claude MCP servers to the workers),
 `--with-kodeks` (dev standard — read its section first), `--with-guard-hook`.

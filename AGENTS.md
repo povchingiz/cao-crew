@@ -21,7 +21,7 @@ Run `run/cao-doctor` directly on the user's behalf:
 ```bash
 run/cao-doctor
 ```
-- **If `cao` or `cao-server` is missing:** Run `./setup/1_install/bootstrap.sh` to install the orchestrator daemon and symlink helper scripts.
+- **If `cao` or `cao-server` is missing:** Run `./install.sh` (recommended one-command installer: bootstrap + interactive onboarding/logins + pre-flight doctor check) or, step by step, `./setup/1_install/bootstrap.sh` to install the orchestrator daemon and symlink helper scripts.
 - **If `tmux` is missing:** Advise the user to install it (`brew install tmux` on macOS, `sudo apt install tmux` on Linux).
 - **If some worker engines are missing:** Reassure the user that **they do not need all 5 engines!** `wcao` works smoothly even with just 1 supervisor (e.g. Claude) and 1 worker (e.g. OpenCode, Codex, or Agy).
 

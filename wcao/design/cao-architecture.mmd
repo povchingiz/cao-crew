@@ -19,7 +19,7 @@ sequenceDiagram
     participant TMUX as tmux sessions
     participant SUP as supervisor<br/>(claude, Tech Lead)
     participant W as workers<br/>(coder/analyst/codex/qa/claude)
-    participant EP as nitec endpoint<br/>llm.nitec.kz/v1
+    participant EP as bulk endpoint<br/>openrouter.ai/api/v1
     participant TOK as cao-tokens<br/>(run)
 
     Note over U,CAO: ===== PHASE 1 — INSTALL (once, idempotent) =====
@@ -36,7 +36,7 @@ sequenceDiagram
     U->>AP: ./apply.sh
     AP->>RC: render_config.py
     RC->>CFG: read (local overrides template)
-    RC->>OCJ: write provider=nitec + models(deepseek,kimi,glm) + default
+    RC->>OCJ: write provider=openrouter + models + default
     RC->>STG: write each worker .md (provider/model into frontmatter)
     RC->>STG: regen supervisor AUTO-MAPPING from aliases+focus
     RC->>STG: prune_stale_profiles — delete staging .md with no tracked source
@@ -77,7 +77,7 @@ sequenceDiagram
     end
     SUP->>W: assign ready tasks in parallel (assign MCP tool, up to max_concurrent_workers)
     CAO->>TMUX: spawn worker panes per profile
-    W->>EP: coder_worker → nitec/deepseek (bulk impl)
+    W->>EP: coder_worker → bulk endpoint (bulk impl)
     W->>W: codex_worker → UI · claude_worker → contracts/hard logic
     W-->>SUP: send_message result back (via caller terminal_id)
     SUP->>W: audit gate: assign antigravity_worker (QA)

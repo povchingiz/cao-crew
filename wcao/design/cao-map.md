@@ -19,7 +19,7 @@ setup/2_configure/cao.config.local.toml   (gitignored, YOUR real endpoint+models
         │  (falls back to cao.config.toml template if local absent)
         ▼  render_config.py
    ├── ~/.config/cao/settings.json           (orchestrator block)
-   ├── ~/.aws/opencode/opencode.json         (nitec endpoint + 3 models)
+   ├── ~/.aws/opencode/opencode.json         (bulk endpoint + models)
    └── agent_store/*.md  (STAGING)           (worker frontmatter + supervisor mapping)
         │  cao install
         ▼
@@ -32,7 +32,7 @@ setup/2_configure/cao.config.local.toml   (gitignored, YOUR real endpoint+models
 |---------|---------------|------|---------|
 | `code_supervisor` | claude | Tech Lead — architecture, coordination, contracts | (supervisor) |
 | `claude_worker` | claude | Senior Eng — contracts, hard logic, tricky fixes | claude, architect |
-| `coder_worker` | opencode / nitec deepseek | Coding — impl against blueprint, bulk, CRUD | coder, code, bulk |
+| `coder_worker` | opencode / bulk model | Coding — impl against blueprint, bulk, CRUD | coder, code, bulk |
 | `analyst_worker` | antigravity (Gemini) | Context Analyst — repo maps, long docs, multimodal | analyst, context, research, map |
 | `codex_worker` | codex | Frontend — React/CSS/UI | codex, frontend, ui |
 | `antigravity_worker` | antigravity (Gemini) | QA — tests, security, audit | qa, tests, review, audit |

@@ -22,18 +22,15 @@ server_port             = 9889
 # claude_code / codex / antigravity_cli instead (see below) and this endpoint is
 # unused — the bulk role then runs on one of those engines.
 [endpoint]
-name     = "nitec"                        # opencode provider id (any label)
-base_url = "https://llm.nitec.kz/v1"
+name     = "openrouter"                   # opencode provider id (any label)
+base_url = "https://openrouter.ai/api/v1"
 # Models this endpoint serves (exact ids as the endpoint lists them).
 models   = [
-  "deepseek-ai/DeepSeek-V4.1-Flash",
-  "moonshotai/Kimi-K3",
-  "zai-org/GLM-5.3",
-  "zai-org/GLM-5.3-Flash",
-  "deepseek-ai/DeepSeek-V4-Pro",
+  "deepseek/deepseek-chat",
+  "qwen/qwen-2.5-coder-32b-instruct",
 ]
 # Default model the bulk worker uses (must be one of `models` above).
-default_model = "moonshotai/Kimi-K3"
+default_model = "deepseek/deepseek-chat"
 
 # ---- Workers: engine, model, and ROLE — the one place to reconfigure them ----
 # For each worker:
@@ -52,7 +49,7 @@ focus    = "architecture, domain logic, API contracts, DDD boundaries, refactori
 
 [workers.coder_worker]
 provider = "opencode_cli"
-model    = "moonshotai/Kimi-K3"
+model    = "deepseek/deepseek-chat"
 aliases  = ["coder", "code", "bulk", "opencode", "cheap"]
 focus    = "cheap high-throughput coding model: boilerplate, DB schemas, migrations, repetitive utilities, implementing against a contract/blueprint"
 

@@ -104,6 +104,25 @@ def render_opencode(c):
     live.write_text(json.dumps(out, indent=2) + "\n")
     print(f"  opencode.json      -> {live}")
 
+    # Keep the native OpenCode config in sync: merge only the provider + default
+    # model so user-owned settings there (mcp, tools, keybinds) are preserved.
+    cfg_live = HOME / ".config" / "opencode" / "opencode.json"
+    if cfg_live.exists():
+        try:
+            existing = json.loads(cfg_live.read_text())
+        except json.JSONDecodeError:
+            existing = {}
+        if not isinstance(existing, dict):
+            existing = {}
+        existing.setdefault("provider", {})
+        existing["provider"].update(out["provider"])
+        existing["model"] = out["model"]
+        cfg_live.write_text(json.dumps(existing, indent=2) + "\n")
+    else:
+        cfg_live.parent.mkdir(parents=True, exist_ok=True)
+        cfg_live.write_text(json.dumps(out, indent=2) + "\n")
+    print(f"  opencode.json      -> {cfg_live}")
+
 
 LIVE_STORE = HOME / ".aws" / "cli-agent-orchestrator" / "agent_store"
 
@@ -148,7 +167,7 @@ def render_workers(c):
             # The `<endpoint>/…` prefix is ONLY for the opencode bulk endpoint
             # (opencode resolves a model as "<provider>/<id>"). Every other engine
             # (codex, antigravity/gemini, copilot) names its models directly, so
-            # writing a "nitec/…" prefix there would be a broken id. Prefix only
+            # writing an "<endpoint>/…" prefix there would be a broken id. Prefix only
             # for opencode_cli, and don't double-prefix one already qualified.
             if w.get("provider") == "opencode_cli":
                 if "/" not in model:

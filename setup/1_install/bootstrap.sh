@@ -265,22 +265,44 @@ fi
 ok "cao-crew installed at: $REPO"
 ok "config UI: run/cao-config (opens browser)"
 ok ".env location: $REPO/.env"
+
 cat <<'EOF'
 
 ============================================================
-  BOOTSTRAP DONE. Remaining INTERACTIVE steps (by hand):
+  BOOTSTRAP DONE.
 ============================================================
 
+Remaining INTERACTIVE steps (logins) can be done by the onboarding wizard
+below, or by hand:
 1. Claude Code login:      claude   (follow /login on first use)
 2. Codex login (ChatGPT):  codex login
 3. Antigravity (agy):      agy      (Google sign-in if prompted)
-4. bulk worker:         needs LOCAL_API_KEY in .env (already persisted
+4. bulk worker:            needs LOCAL_API_KEY in .env (already persisted
                            to ~/.config/cao/cao.env if you set it).
-
-Then run:  cao-run
-       or: cao-config   (browser config editor — edit endpoint/models/port)
 
 All four workers (claude / opencode / codex / antigravity) callable from the
 supervisor. Re-run this script after any `cao update` (re-applies pyte patch).
 EOF
+
+# Offer the onboarding wizard (handles logins + smart coder_worker routing).
+# Interactive TTY only — never block CI / piped runs.
+ONBOARDING="$HERE/onboarding.sh"
+if [ -t 0 ] && [ -z "${CAO_SKIP_ONBOARDING:-}" ]; then
+  if [ -x "$ONBOARDING" ]; then
+    printf '\033[1;36m[?]\033[0m Run the onboarding wizard now (logins + coder_worker routing)? [Y/n] '
+    read -r answer || answer=""
+    case "$answer" in
+      [Nn]|[Nn][Oo])
+        warn "Skipped. Run it later:  ./setup/1_install/onboarding.sh"
+        ;;
+      *)
+        "$ONBOARDING" "$@"
+        ;;
+    esac
+  else
+    warn "onboarding.sh not found at $ONBOARDING — skipping wizard offer."
+  fi
+fi
+
+printf '\nThen run:  cao-run\n       or:  cao-config   (browser config editor — edit endpoint/models/port)\n'
 

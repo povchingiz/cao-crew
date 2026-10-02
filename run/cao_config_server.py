@@ -7,6 +7,7 @@ No pip dependencies — stdlib only.
 """
 import http.server
 import json
+import logging
 import os
 import re
 import subprocess
@@ -16,6 +17,8 @@ import time
 import tomllib
 import urllib.parse
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 PORT = 9877
 INACTIVITY_TIMEOUT = 60  # seconds
@@ -109,7 +112,7 @@ HTML = r"""<!DOCTYPE html>
     <div class="row">
       <div class="field">
         <label>Name</label>
-        <input type="text" id="endpoint_name" value="__ENDPOINT_NAME__" placeholder="nitec">
+        <input type="text" id="endpoint_name" value="__ENDPOINT_NAME__" placeholder="openrouter">
       </div>
       <div class="field">
         <label>Base URL</label>
@@ -320,8 +323,8 @@ def write_local_toml(path: Path, data: dict, models: list[str]) -> None:
         try:
             with open(base_toml_path, "rb") as f:
                 base_cfg = tomllib.load(f)
-        except Exception:
-            pass
+        except (tomllib.TOMLDecodeError, OSError) as e:
+            logger.warning("Failed to load base config %s: %s", base_toml_path, e)
 
     # Build merged orchestrator section
     orch = dict(base_cfg.get("orchestrator", {}))
