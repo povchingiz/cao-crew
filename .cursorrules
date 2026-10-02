@@ -1,4 +1,4 @@
-# Cursor Rules for wcao
+# Cursor Rules for cao-crew
 # This repository adheres to the universal AGENTS.md cross-agent standard.
 # Always read and follow AGENTS.md for workspace rules, onboarding protocols, and command usage.
 
@@ -6,8 +6,10 @@ Please read AGENTS.md before suggesting or executing actions.
 Key rules:
 1. All agent plans, designs, and audits live in wcao/ (plans/, design/, audit/).
 2. Never leak, print, or commit .env or API keys.
-3. Edit configurations in setup/2_configure/ and apply with ./setup/3_apply/apply.sh.
-4. When guiding the user on running wcao, follow the 3-step protocol in AGENTS.md:
+3. Install with ./install.sh (one-command installer). Update with ./update.sh (or run/cao-update):
+   syncs git, re-applies patches wiped by `cao update`, refreshes symlinks, re-registers profiles, restarts the daemon, runs doctor.
+4. Edit configurations in setup/2_configure/ and apply with ./setup/3_apply/apply.sh.
+5. When guiding the user on running cao-crew, follow the 3-step protocol in AGENTS.md:
    - Step 1: run/cao-doctor
    - Step 2: verify native CLI logins (claude /login, codex login, agy, gh auth login)
    - Step 3: launch with run/cao-run or run/cao-auto

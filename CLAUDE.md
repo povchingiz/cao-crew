@@ -1,13 +1,14 @@
-# wcao — Multi-Engine Autonomous CLI Agent Orchestrator
+# cao-crew — Autonomous CLI Agent Orchestrator
 
-> **Note for Claude Code:** This repository adheres to the universal [`AGENTS.md`](file:///Users/yerta/wcao/AGENTS.md) protocol. When the user asks how to run, set up, or test `wcao`, follow the **3-Step Interactive Onboarding Protocol** in `AGENTS.md`.
+> **Note for Claude Code:** This repository adheres to the universal [`AGENTS.md`](AGENTS.md) protocol. When the user asks how to run, set up, or test `cao-crew`, follow the **3-Step Interactive Onboarding Protocol** in `AGENTS.md`.
 
 ## Quick Orientation
-`wcao` is the management, memory, and orchestration platform for CAO. It renders agent profiles, manages tmux worker daemon sessions, and coordinates autonomous multi-agent engineering workflows.
+`cao-crew` is the management, memory, and orchestration platform for CAO. It renders agent profiles, manages tmux worker daemon sessions, and coordinates autonomous multi-agent engineering workflows.
 
 ## Essential Commands
 ```bash
 run/cao-doctor             # Validate system dependencies and worker engines
+run/cao-update             # Update repo, re-apply patches, re-register profiles, verify health
 run/cao-run                # Start interactive supervisor session in tmux
 run/cao-auto "<goal>"      # Run headless autonomous DAG execution
 ./setup/3_apply/apply.sh         # Render prompts/configs and re-register profiles with daemon
@@ -30,7 +31,7 @@ run/cao-monitor            # Real-time task board viewer
    - Edit worker prompts in `setup/2_configure/prompts/` and settings in `setup/2_configure/cao.config.toml`.
    - Always run `./setup/3_apply/apply.sh` after configuration modifications.
 4. **Full Agent Guidance**:
-   - See [`AGENTS.md`](file:///Users/yerta/wcao/AGENTS.md) for the complete troubleshooting matrix and onboarding flow.
+   - See [`AGENTS.md`](AGENTS.md) for the complete troubleshooting matrix and onboarding flow.
 5. **Strict Git Push Policy**:
    - NEVER run `git push` without explicit user confirmation. Commit locally, run tests, but wait for user approval before pushing.
 

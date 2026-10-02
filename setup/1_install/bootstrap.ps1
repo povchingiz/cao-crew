@@ -11,8 +11,9 @@
 
   It will:
     1. Verify / install WSL2 + Ubuntu (may require a reboot the first time).
-    2. Clone this repo into the Ubuntu home (~/wcao) if not already there.
-    3. Drop you into Ubuntu so you can set .env and run ./setup/1_install/bootstrap.sh.
+    2. Clone this repo into the Ubuntu home (~/cao-crew) if not already there.
+    3. Drop you into Ubuntu so you can set .env and run ./install.sh (one-command
+       installer) or ./setup/1_install/bootstrap.sh.
 
   No secrets are handled here. LOCAL_API_KEY is set later inside WSL, in .env.
 #>
@@ -51,22 +52,24 @@ $repoUrl = ""
 try { $repoUrl = (git config --get remote.origin.url) 2>$null } catch {}
 if (-not $repoUrl) {
     Warn "Could not read this repo's origin URL from Windows git."
-    Warn "Inside WSL, clone it manually into ~/wcao."
+    Warn "Inside WSL, clone it manually into ~/cao-crew."
 } else {
-    Info "Cloning $repoUrl into WSL ~/wcao (if absent)..."
-    $clone = "if [ ! -d `$HOME/wcao/.git ] && [ ! -d `$HOME/cao-setup/.git ]; then git clone '$repoUrl' `$HOME/wcao; else echo 'already cloned'; fi"
+    Info "Cloning $repoUrl into WSL ~/cao-crew (if absent)..."
+    $clone = "if [ ! -d `$HOME/cao-crew/.git ] && [ ! -d `$HOME/wcao/.git ]; then git clone '$repoUrl' `$HOME/cao-crew; else echo 'already cloned'; fi"
     wsl.exe -e bash -lc "$clone"
 }
 
 Ok "WSL is ready."
 Write-Host ""
 Write-Host "Next, inside Ubuntu (this drops you in):" -ForegroundColor Cyan
-Write-Host "    cd ~/wcao" -ForegroundColor White
+Write-Host "    cd ~/cao-crew" -ForegroundColor White
 Write-Host "    cp .env.example .env   # set LOCAL_API_KEY" -ForegroundColor White
+Write-Host "    ./install.sh           # one-command installer" -ForegroundColor White
+Write-Host "  # or step by step:" -ForegroundColor White
 Write-Host "    ./setup/1_install/bootstrap.sh" -ForegroundColor White
 Write-Host ""
 Write-Host "Keep the repo in WSL home (/home/...), NOT on /mnt/c — see WINDOWS.md." -ForegroundColor Yellow
 Write-Host ""
 
 # Hand off into WSL home.
-wsl.exe -e bash -lc "cd `$HOME/wcao 2>/dev/null || cd `$HOME/cao-setup 2>/dev/null || cd `$HOME; exec bash -l"
+wsl.exe -e bash -lc "cd `$HOME/cao-crew 2>/dev/null || cd `$HOME/wcao 2>/dev/null || cd `$HOME; exec bash -l"

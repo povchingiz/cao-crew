@@ -23,7 +23,7 @@ run/cao-doctor
 ```
 - **If `cao` or `cao-server` is missing:** Run `./install.sh` (recommended one-command installer: bootstrap + interactive onboarding/logins + pre-flight doctor check) or, step by step, `./setup/1_install/bootstrap.sh` to install the orchestrator daemon and symlink helper scripts.
 - **If `tmux` is missing:** Advise the user to install it (`brew install tmux` on macOS, `sudo apt install tmux` on Linux).
-- **If some worker engines are missing:** Reassure the user that **they do not need all 5 engines!** `wcao` works smoothly even with just 1 supervisor (e.g. Claude) and 1 worker (e.g. OpenCode, Codex, or Agy).
+- **If some worker engines are missing:** Reassure the user that **they do not need all 5 engines!** `cao-crew` works smoothly even with just 1 supervisor (e.g. Claude) and 1 worker (e.g. OpenCode, Codex, or Agy).
 
 ### Step 2: Native CLI Authentication (User action required)
 Remind the user that AI agents cannot and should not type passwords or session keys for them. If `cao-doctor` flags an unauthenticated CLI, give them the exact command to run once in their terminal:
@@ -56,8 +56,8 @@ All AI agents operating in this repository MUST follow these rules:
    - *DO NOT create loose markdown plans or state files in the root directory.*
 
 2. **Configuration Workflow (Never edit rendered files directly!):**
-   - Edit worker definitions, models, or endpoints in: [`setup/2_configure/cao.config.toml`](file:///Users/yerta/wcao/2_configure/cao.config.toml)
-   - Edit worker system prompts in: [`setup/2_configure/prompts/`](file:///Users/yerta/wcao/2_configure/prompts/)
+   - Edit worker definitions, models, or endpoints in: [`setup/2_configure/cao.config.toml`](setup/2_configure/cao.config.toml)
+   - Edit worker system prompts in: [`setup/2_configure/prompts/`](setup/2_configure/prompts/)
    - After editing, ALWAYS run: `./setup/3_apply/apply.sh` to regenerate daemon profiles.
 
 3. **Security & Secrets Guardrails:**
@@ -72,6 +72,7 @@ All AI agents operating in this repository MUST follow these rules:
 | Command | Purpose |
 |---|---|
 | `run/cao-doctor` | Pre-flight health check across tools, ports, logins, endpoints |
+| `run/cao-update` / `./update.sh` | Full update: sync git, re-patch site-packages, refresh symlinks, apply config, restart daemon, run doctor |
 | `run/cao-run` | Launch interactive multi-agent supervisor in `tmux` |
 | `run/cao-auto "<goal>"` | Run autonomous headless DAG pipeline with self-healing |
 | `run/cao-stop` | Cleanly terminate orchestrator daemon and background panes |
@@ -96,3 +97,4 @@ All AI agents operating in this repository MUST follow these rules:
 | Supervisor launch times out (~30s client / 60s server) | `cao update` erased the `wait_for_shell` patch, so shell readiness waits on a FIFO that never publishes | Run `run/cao-patch` (or `run/cao-doctor` D8). Re-run after every `cao update` / reinstall — `cao-run` now does this automatically. Background: `wcao/audit/2026-09-23-session-launch-timeout.md` |
 | `opencode` worker fails auth for no visible reason | The daemon was started by hand and inherited no `LOCAL_API_KEY`; worker panes inherit the daemon's env, not your shell's | Restart via `run/cao-run` (it passes the key through). `run/cao-doctor` D7 checks this |
 | Supervisor routes to the wrong worker | The live routing table drifted from the config | Run `./setup/3_apply/apply.sh`. `run/cao-doctor` D6 detects the drift |
+| Patches / config wiped after an update | `cao update` (upstream) erases site-packages patches and can leave stale profiles/symlinks | Run `run/cao-update` / `./update.sh` — it re-applies patches, refreshes `~/.local/bin` symlinks, re-registers profiles, restarts the daemon, and re-runs doctor automatically |

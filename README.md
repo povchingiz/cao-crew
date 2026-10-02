@@ -25,9 +25,9 @@ git clone git@github.com:povchingiz/cao-crew.git ~/cao-crew && cd ~/cao-crew
 
 ### Quick Navigation
 * ⚡ **[TL;DR](#tldr)** — 30-second summary: architecture, economic asymmetry, and quickstart
-* 🤖 **[AI Assistant Onboarding](#-first-time-let-your-ai-assistant-guide-you)** — ask your AI agent to set up wcao automatically (`AGENTS.md` standard)
-* 🌐 **[Interactive Slides](https://povchingiz.github.io/wcao/)** — 16 bilingual slides (RU/EN), dark/light mode, and rival benchmarks
-* 🔄 **[Execution Sequence Diagram](https://povchingiz.github.io/wcao/#16)** — native visual trace from North Star goal to verified commit
+* 🤖 **[AI Assistant Onboarding](#-first-time-let-your-ai-assistant-guide-you)** — ask your AI agent to set up cao-crew automatically (`AGENTS.md` standard)
+* 🌐 **[Interactive Slides](https://povchingiz.github.io/cao-crew/)** — 16 bilingual slides (RU/EN), dark/light mode, and rival benchmarks
+* 🔄 **[Execution Sequence Diagram](https://povchingiz.github.io/cao-crew/#16)** — native visual trace from North Star goal to verified commit
 * ⚠️ **[The Problem](#the-problem)** — 6 fatal flaws of single-agent and uncoordinated coding
 * 🧩 **[The Solution](#the-solution-a-unified-engineering-squad)** — specialist workforce, economic asymmetry, and DAG execution
 * ⚡ **[Core Capabilities](#core-capabilities-at-a-glance)** — multi-engine swarm, 50% context compactor, TokenMaster quota sensors
@@ -44,7 +44,7 @@ git clone git@github.com:povchingiz/cao-crew.git ~/cao-crew && cd ~/cao-crew
 If you are using **Cursor, Claude Code, OpenAI Codex, Windsurf, GitHub Copilot, or Google Antigravity**, you don't need to configure everything manually. This repository includes universal cross-agent instructions in [`AGENTS.md`](AGENTS.md), [`CLAUDE.md`](CLAUDE.md), and [`.cursorrules`](.cursorrules).
 
 Just open this repository in your IDE or terminal and prompt your AI assistant:
-> *"Help me set up wcao and check my environment"*
+> *"Help me set up cao-crew and check my environment"*
 
 Your AI assistant will automatically:
 1. Run `run/cao-doctor` to test your local tools, daemon port, and existing CLI logins.
@@ -147,6 +147,7 @@ Every command takes `-h`/`--help`. Nothing here needs arguments to start.
 | `cao-memory` | **Episodic memory**: SQLite FTS5 store, recall, and list cross-session lessons (`store`, `recall`, `list`) |
 | `cao-aggressive` | **Postflight audit & stress-tester**: 5-vector verification (AST, secrets, 12-factor, tests) + auto-generates executable load/stress harness (`wcao/audit/stress-test.sh`) |
 | `cao-doctor` | run pre-flight health check on its own (toolchain, engines, logins, endpoint) |
+| `cao-update` / `./update.sh` | **One-command full update**: git pull, re-apply site-packages patches, refresh `~/.local/bin` symlinks, apply config, restart daemon, doctor |
 | `cao-tokens` | heatmap + per-day usage across **all engines**, last 7 days, cao-only (cells are in/out) |
 | `cao-plugins` | share Claude MCP + plugins/skills with every engine (`list`, `broadcast --dry-run`) |
 | `cao-stop` | end session: stop daemon + tmux sessions (`--workers` keeps supervisor, `-k` keeps daemon) |
@@ -162,15 +163,14 @@ engine · `CAO_FALLBACK_PROVIDER` sets the auto-retry engine · `LOCAL_API_KEY`
 ## 1. Install (once)
 
 ```sh
-git clone <this-repo-url> ~/wcao
-cd ~/wcao
+git clone git@github.com:povchingiz/cao-crew.git ~/cao-crew && cd ~/cao-crew
 cp .env.example .env               # set LOCAL_API_KEY (bulk-worker endpoint key)
 ./install.sh                       # recommended one-command setup
 # or, step by step:
 ./setup/1_install/bootstrap.sh
 ```
 
-`./install.sh` is the recommended one-command setup: it runs the bootstrap
+`./install.sh` is the **recommended one-command installer**: it runs the bootstrap
 installer, walks you through the interactive onboarding and native CLI logins
 (`claude`, `codex`, `agy`, `gh auth login`), and finishes with the pre-flight
 `cao-doctor` check — everything from the section above in a single step.
@@ -180,6 +180,31 @@ Flags: `--inherit-mcp` (give your existing Claude MCP servers to the workers),
 
 Prerequisites: macOS needs [Homebrew](https://brew.sh); Linux needs `sudo` (for
 `apt`). Scripts clone executable — no `chmod` needed.
+
+### Upgrades & Existing Tenant Updates
+
+Already have cao-crew installed? Update with one command:
+
+```sh
+cao-update              # or: ./update.sh
+```
+
+`cao-update` (a thin wrapper around `./update.sh` → `run/cao-update`) keeps an
+existing install current:
+
+1. **Pulls the latest code** (`git pull --ff-only`; skips safely if you have local changes).
+2. **Re-applies site-packages patches** that `cao update` silently wipes (e.g. the `wait_for_shell` pyte patch).
+3. **Refreshes the `~/.local/bin` symlinks** so all `cao-*` helpers point at the new code.
+4. **Re-renders configs and re-registers worker profiles** (`./setup/3_apply/apply.sh`), then restarts the daemon.
+5. **Runs the pre-flight `cao-doctor` check** to verify health.
+
+Every step is idempotent — safe to re-run at any time. Flags:
+- `--full` — also update the worker CLIs (claude, codex, opencode) via npm.
+- `--npm` — only update the worker CLIs via npm, skip everything else.
+- `-y` — auto-confirm prompts (non-interactive).
+
+After running `cao update` (the upstream AWS CLI's own updater), re-run
+`cao-update` — it restores the patches that upstream update erases.
 
 ### Native CLI Authentication (Pre-Flight Terminal Logins)
 
@@ -450,8 +475,9 @@ it as `{env:LOCAL_API_KEY}`). Endpoint URL and model ids are not secret.
 
 ## After `cao update`
 
-Re-run `./setup/1_install/bootstrap.sh` — it re-applies the pyte patch (which lives in
-the CAO venv and is lost on reinstall). Idempotent.
+Re-run `cao-update` (or `./update.sh`, or `./setup/1_install/bootstrap.sh`) — it
+re-applies the pyte patch (which lives in the CAO venv and is lost on
+reinstall). Idempotent.
 
 ## dev-kodeks (optional development standard)
 
