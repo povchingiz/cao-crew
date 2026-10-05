@@ -23,9 +23,14 @@ All shipped — see [`archive/`](archive/) for historical specs.
 - `cao-run` fix: early symlink resolution prevents `$HERE: unbound variable` crash ([`wcao/plans/2026-09-22-cao-run-fix.md`](2026-09-22-cao-run-fix.md))
 - Shorthand supervisor flag: `--sv <engine>` (`agy`, `codex`, `claude`, `opencode`, `hermes`) in `run/cao-run`
 - `code_supervisor.md` prompt streamlined to strict orchestration-only mandate
-- Configured bulk models for OpenCode (`Kimi-K3`, `GLM-5.3`, `DeepSeek-V4-Pro`)
+- Configured bulk models for OpenCode (`GLM-5.3`, `GLM-5.3-Flash`, `DeepSeek-V4.1-Flash`)
 - 58/58 test suite passing (`tests/test_cao_run_flags.py`)
 - Orca ADE architecture comparison & backlog mapped
+- Zero-stumble onboarding wizard (`setup/1_install/onboarding.sh`), `./install.sh`, and Smart Zero-Config fallback ([`wcao/plans/2026-10-02-zero-stumble-onboarding.md`](2026-10-02-zero-stumble-onboarding.md) — Issue #1)
+- Tenant update machinery (`run/cao-update`, `./update.sh`) with site-packages re-patching and config re-registration
+- Eradicated all internal endpoints from public configs, diagrams, and templates (default to OpenRouter)
+- Full documentation overhaul across `README.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, and `WINDOWS.md`
+- 5-vector audit gate clean: 10 passed · 0 warnings · 0 blockers (`run/cao-aggressive`)
 
 ---
 
